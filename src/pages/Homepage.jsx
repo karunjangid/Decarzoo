@@ -5,6 +5,7 @@ import All from "../assets/categories/all.png";
 import Men from "../assets/categories/men.png";
 import Women from "../assets/categories/women.png";
 import Kids from "../assets/categories/kids.png";
+import Anjali from "../assets/categories/anjali.png";
 
 const categories = [
   { id: 'all', label: 'All Products', img: All },
@@ -12,7 +13,6 @@ const categories = [
   { id: 'womenfashion', label: 'Women fashion', img: Women },
   { id: 'kids', label: 'Kids', img:Kids  },
 ];
-
 
 const sortOptions = [
   'Relevance',
@@ -27,7 +27,7 @@ const categoryOptions = ['Men', 'Women', 'Kids'];
 
 const genderOptions = ['Men', 'Women', 'Girls', 'Boys'];
 
-const Homepage = () => {
+const Homepage = ({ onDataLoaded }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [address, setAddress] = useState('Delivering to Sapotara - 322202');
@@ -40,7 +40,54 @@ const Homepage = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [showOfferPopup, setShowOfferPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState([]);
 
+  useEffect(() => {
+    // Simulate async data fetch
+    const timer = setTimeout(() => {
+      // Simulated product data
+      const fetchedProducts = [
+        {
+          id: 1,
+          name: "Trendy Embroidery Tshirts Women",
+          img: "https://tse3.mm.bing.net/th/id/OIP.ehVuwTslW4XefmQ6AhHlTgHaHa?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3",
+        },
+        {
+          id: 2,
+          name: "Trendy Embroidery Tshirts Men",
+          img: "https://tse4.mm.bing.net/th/id/OIP.6taFM--8l94hLSn_LHD-PgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+        },
+        {
+          id: 3,
+          name: "Lehnga - Lugdi",
+          img: "https://i.ytimg.com/vi/HLRmhQMw61o/oar2.jpg?sqp=-oaymwEkCJUDENAFSFqQAgHyq4qpAxMIARUAAAAAJQAAyEI9AICiQ3gB&rs=AOn4CLDT01DlG5POdOH2JW7_TEhjsH07Rw",
+        },
+        {
+          id: 4,
+          name: "Trendy Embroidery Shirts",
+          img: "https://content.backcountry.com/images/items/large/MLY/MLY00DO/NATSTR_D5.jpg",
+        },
+        {
+          id: 5,
+          name: "kids Embroidery Shoes",
+          img: "https://i.pinimg.com/736x/ef/8f/dc/ef8fdce7a72a03d1879d96f9288b4758--embroidery-stitches-hand-embroidery.jpg",
+        },
+        {
+          id: 6,
+          name: "Bulk Order",
+          img: "https://th.bing.com/th/id/OIP.Ns8PiqnnMoCHK1yU8JLQCwHaEu?w=240&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3",
+        },
+      ];
+      setProducts(fetchedProducts);
+      setIsLoading(false);
+      if (onDataLoaded) {
+        onDataLoaded();
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [onDataLoaded]);
 
   const toggleSortOptions = () => {
     setShowSortOptions(!showSortOptions);
@@ -84,7 +131,6 @@ const Homepage = () => {
     }
   };
 
-
   const toggleOfferPopup = () => {
     setShowOfferPopup(!showOfferPopup);
   };
@@ -92,6 +138,11 @@ const Homepage = () => {
   const handleCategoryClick = (categoryId) => {
     navigate(`/category/${categoryId}`);
   };
+
+  if (isLoading) {
+    return <div className="loading">Loading products...</div>;
+  }
+
   return (
     <div className="homepageContainer">
       {/* Search Bar */}
@@ -188,38 +239,7 @@ const Homepage = () => {
       <section className="crazyProductShowcase">
         <h2 className="sectionTitle">BEST PRODUCTS</h2>
         <div className="productCardsContainer">
-          {[  
-            {
-              id: 1,
-              name: "Trendy Embroidery Tshirts Women",
-              img: "https://tse3.mm.bing.net/th/id/OIP.ehVuwTslW4XefmQ6AhHlTgHaHa?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3",
-            },
-            {
-              id: 2,
-              name: "Trendy Embroidery Tshirts Men",
-              img: "https://tse4.mm.bing.net/th/id/OIP.6taFM--8l94hLSn_LHD-PgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
-            },
-            {
-              id: 3,
-              name: "Lehnga - Lugdi",
-              img: "https://i.ytimg.com/vi/HLRmhQMw61o/oar2.jpg?sqp=-oaymwEkCJUDENAFSFqQAgHyq4qpAxMIARUAAAAAJQAAyEI9AICiQ3gB&rs=AOn4CLDT01DlG5POdOH2JW7_TEhjsH07Rw",
-            },
-            {
-              id: 4,
-              name: "Trendy Embroidery Shirts",
-              img: "https://content.backcountry.com/images/items/large/MLY/MLY00DO/NATSTR_D5.jpg",
-            },
-            {
-              id: 5,
-              name: "kids Embroidery Shoes",
-              img: "https://i.pinimg.com/736x/ef/8f/dc/ef8fdce7a72a03d1879d96f9288b4758--embroidery-stitches-hand-embroidery.jpg",
-            },
-            {
-              id: 6,
-              name: "Bulk Order",
-              img: "https://th.bing.com/th/id/OIP.Ns8PiqnnMoCHK1yU8JLQCwHaEu?w=240&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3",
-            },
-          ].map((product) => (
+          {products.map((product) => (
             <div key={product.id} className="productCard">
               <div className="productImageWrapper">
                 <img src={product.img} alt={product.name} className="productImage" />
@@ -288,7 +308,7 @@ const Homepage = () => {
               id: 109,
               name: "Kurti with Emroidered Design",
               price: "700/- Rs",
-              img: "https://tse3.mm.bing.net/th/id/OIP.XEzN_PWVP9fu_nAe8_WdSQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+              img: Anjali,
             },
             {
               id: 110,
